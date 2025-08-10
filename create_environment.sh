@@ -9,33 +9,60 @@ app_directory="submission_reminder_${name}"
 mkdir -p "$app_directory"
 
 # Step 3: Create subdirectories inside the main directory
-mkdir -p "$app_directory"/{bin,src,config,data}
+mkdir -p "$app_directory"/{app,modules,config,assets}
 
 # Step 4: Create the files inside the subdirectories and add the given content
 
 # Create and populate reminder.sh
-cat << 'EOF' > "$app_directory/src/reminder.sh"
+cat << 'EOF' > "$app_directory/app/reminder.sh"
 #!/bin/bash
-# Reminder script for the application
-echo "Reminder: Submit your assignments!"
+# Source environment variables and helper functions
+source ./config/config.env
+source ./modules/functions.sh
+
+# Path to the submissions file
+submissions_file="./assets/submissions.txt"
+
+# Print remaining time and run the reminder function
+echo "Assignment: $ASSIGNMENT"
+echo "Days remaining to submit: $DAYS_REMAINING days"
+echo "--------------------------------------------"
+
+check_submissions $submissions_file
+
 EOF
 
 # Create and populate functions.sh
-cat << 'EOF' > "$app_directory/src/functions.sh"
+cat << 'EOF' > "$app_directory/modules/functions.sh"
 #!/bin/bash
-# Functions for the submission reminder app
 
-function check_submission_status {
-    # Check if a student has submitted their work
-    echo "Checking submission status..."
+# Function to read submissions file and output students who have not submitted
+function check_submissions {
+    local submissions_file=$1
+    echo "Checking submissions in $submissions_file"
+
+    # Skip the header and iterate through the lines
+    tail -n +2 "$submissions_file" | while IFS=, read -r student assignment status; do
+        # Remove leading and trailing whitespace and normalize case
+        student=$(echo "$student" | xargs)
+        assignment=$(echo "$assignment" | xargs)
+        status=$(echo "$status" | xargs)
+
+        # Check if assignment matches and status is 'not submitted' (case-insensitive)
+        if [[ "${assignment,,}" == "${ASSIGNMENT,,}" && "${status,,}" == "not submitted" ]]; then
+            echo "Reminder: $student has not submitted the $ASSIGNMENT assignment!"
+        fi
+    done
 }
 EOF
 
 # Create and populate config.env
 cat << 'EOF' > "$app_directory/config/config.env"
 # Configuration for the submission reminder app
-APP_NAME="Submission Reminder App"
-VERSION="1.0"
+# This is the config file
+ASSIGNMENT="Shell Navigation"
+DAYS_REMAINING=2
+
 EOF
 
 # Step 5: Create the missing startup.sh script
@@ -45,11 +72,9 @@ cat << 'EOF' > "$app_directory/startup.sh"
 
 echo "Starting the Submission Reminder App..."
 
-# Load the environment variables
-source ./config/config.env
-
 # Execute reminder script
-bash ./src/reminder.sh
+chmod +x app/reminder.sh
+bash ./app/reminder.sh
 EOF
 
 # Step 6: Make the startup.sh script executable
@@ -57,18 +82,20 @@ chmod +x "$app_directory/startup.sh"
 
 # Step 7: Add a sample student record to submissions.txt (modify as needed)
 echo "Adding sample student records to submissions.txt"
-cat << 'EOF' > "$app_directory/data/submissions.txt"
+cat << 'EOF' > "$app_directory/assets/submissions.txt"
 # Sample student submission records
-Student1, submitted
-Student2, not submitted
-Student3, submitted
-Student4, not submitted
-Student5, submitted
-Student6, not submitted
+student, assignment, submission status
+Chinemerem, Shell Navigation, not submitted
+Chiagoziem, Git, submitted
+Divine, Shell Navigation, not submitted
+Anissa, Shell Basics, submitted
+Andrea,shell navigation, submitted
+Moikan,shell basics, not submitted
+kathia,Git, submitted
+Peace,shell processes, not submitted
+chisom,shell signals, submittted
 EOF
 
-# Step 8: Add an image file (image.png) to the root directory of the app
-touch "$app_directory/image.png"
 
 # Step 9: Provide a success message
 echo "Environment setup completed successfully for $name!"
