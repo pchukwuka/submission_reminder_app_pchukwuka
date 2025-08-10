@@ -1,7 +1,0 @@
-# Sample student submission records
-Student1, submitted
-Student2, not submitted
-Student3, submitted
-Student4, not submitted
-Student5, submitted
-Student6, not submitted
