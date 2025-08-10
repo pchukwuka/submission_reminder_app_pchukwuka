@@ -7,7 +7,7 @@ This is a simple application that reminds students to submit their assignments. 
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/submission_reminder_app.git
+    git clone https://github.com/pchukwuka/submission_reminder_app.git
     cd submission_reminder_app
     ```
 
