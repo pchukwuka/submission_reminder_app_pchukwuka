@@ -2,10 +2,10 @@
 
 ## Introduction
 
-The Submission Reminder App is a software created with Linux shell scripts. It helps students keep track of assignment deadlines and sends reminders. 
+**The Submission Reminder App is a software created with Linux shell scripts. It helps students keep track of assignment deadlines and sends reminders. 
 The app includes set up scripts that automatically creates the required folders and files for smooth operation.
 ---
-
+**
 ## Getting Started
 
 You can obtain the project in two ways:
