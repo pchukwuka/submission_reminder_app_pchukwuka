@@ -86,12 +86,12 @@ cat << 'EOF' > "$app_directory/assets/submissions.txt"
 # Sample student submission records
 student, assignment, submission status
 Chinemerem, Shell Navigation, not submitted
-Chiagoziem, Git, submitted
-Divine, Shell Navigation, not submitted
+Ryan, Git, submitted
+Chidinma, Shell Navigation, not submitted
 Anissa, Shell Basics, submitted
 Andrea,shell navigation, submitted
 Moikan,shell basics, not submitted
-kathia,Git, submitted
+Stephen,Git, submitted
 Peace,shell processes, not submitted
 chisom,shell signals, submittted
 EOF
